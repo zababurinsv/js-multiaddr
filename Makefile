@@ -1,5 +1,5 @@
 deps:
 	@npm install
 test: deps
-	@npm test
+	@npm run test:node
 .PHONY: test deps
