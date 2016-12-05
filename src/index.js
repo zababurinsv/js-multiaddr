@@ -9,6 +9,15 @@ var varint = require('varint')
 
 exports = module.exports = Multiaddr
 
+/**
+ * Creates a [multiaddr](https://github.com/multiformats/multiaddr) from
+ * a Buffer, String or Multiaddr
+ * public key.
+ * @class Multiaddr
+ * @type {(String|Buffer|Multiaddr)}
+ * @param {(String|Buffer|Multiaddr)} addr
+ */
+
 function Multiaddr (addr) {
   if (!(this instanceof Multiaddr)) {
     return new Multiaddr(addr)
@@ -30,12 +39,20 @@ function Multiaddr (addr) {
   }
 }
 
-// get the multiaddr protocols
+/**
+ * Returns Multiaddr as a String
+ *
+ * @returns {String}
+ */
 Multiaddr.prototype.toString = function toString () {
   return codec.bufferToString(this.buffer)
 }
 
-// get the multiaddr as a convinent options object to be dropped in net.createConnection
+/**
+ * Returns Multiaddr as a convinient options object to be used with net.createConnection
+ *
+ * @returns {Object}
+ */
 Multiaddr.prototype.toOptions = function toOptions () {
   var opts = {}
   var parsed = this.toString().split('/')
@@ -46,14 +63,25 @@ Multiaddr.prototype.toOptions = function toOptions () {
   return opts
 }
 
-// get the multiaddr protocols
+/**
+ * Returns Multiaddr as a human-readable string
+ *
+ * @returns {String}
+ */
 Multiaddr.prototype.inspect = function inspect () {
   return '<Multiaddr ' +
   this.buffer.toString('hex') + ' - ' +
   codec.bufferToString(this.buffer) + '>'
 }
 
-// get the multiaddr protocols
+/**
+ * Returns the protocols the Multiaddr is defined with, as an array of objects
+ *
+ * @returns {Array.<Object>}
+ * @example
+ * (new Multiaddr("/ip4/127.0.0.1/tcp/4001")).protos()
+ * => [{"code":4,"size":32,"name":"ip4"},{"code":6,"size":16,"name":"tcp"}]
+ */
 Multiaddr.prototype.protos = function protos () {
   return map(this.protoCodes(), function (code) {
     return extend(protocols(code))
