@@ -1,9 +1,15 @@
 node {
-  stage('Build') {
-		sh 'echo $PATH'
-    sh 'npm install'
-  }
-  stage('Test') {
-    sh 'npm run test:node'
+  def nodeHome = tool name: 'NodeJS-6', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
+  withEnv(["PATH=${env.PATH}:${nodeHome}/bin"]) {
+    stage('Checkout') {
+      checkout scm
+    }
+    stage('Build') {
+      sh "env | sort"
+      sh "${nodeHome}/bin/npm install"
+    }
+    stage('Test') {
+      sh "${nodeHome}/bin/npm run test:node"
+    }
   }
 }
