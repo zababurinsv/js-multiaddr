@@ -1,1 +1,4 @@
-nodejs6 {}
+parallel {
+	nodejs6 {}
+	nodejs5 {}
+}
